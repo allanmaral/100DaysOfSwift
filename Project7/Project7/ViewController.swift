@@ -94,7 +94,7 @@ class ViewController: UITableViewController {
 
 }
 
-// MARK: - Table View Delegate and Datasource mathods
+// MARK: - Table View Delegate and Datasource methods
 
 extension ViewController {
     
@@ -116,14 +116,9 @@ extension ViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let detailViewController = DetailViewController()
-//        detailViewController.detailItem = filteredPetitions[indexPath.row]
+        let detailViewController = DetailViewController()
+        detailViewController.detailItem = filteredPetitions[indexPath.row]
         
-//        navigationController?.pushViewController(detailViewController, animated: true)
-        
-        
-        let detailViewController = HomeViewController(nibName: "HomeViewController", bundle: nil)
-        detailViewController.petition = filteredPetitions[indexPath.row]
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     
