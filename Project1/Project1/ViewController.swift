@@ -16,6 +16,23 @@ class ViewController: UITableViewController {
         title = "Storm Viewer"
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        // MARK: This section was removed in the Day 40 Challenge
+        // let fm = FileManager.default
+        // let path = Bundle.main.resourcePath!
+        // let items = try! fm.contentsOfDirectory(atPath: path)
+        //
+        // for item in items {
+        //     if item.hasPrefix("nssl") {
+        //         pictures.append(item)
+        //     }
+        // }
+        //
+        // pictures.sort()
+        
+        performSelector(inBackground: #selector(loadImages), with: nil)
+    }
+    
+    @objc private func loadImages() {
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
         let items = try! fm.contentsOfDirectory(atPath: path)
@@ -27,6 +44,11 @@ class ViewController: UITableViewController {
         }
         
         pictures.sort()
+        
+        // Make sure the table are reloaded after fetching the data from disk
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

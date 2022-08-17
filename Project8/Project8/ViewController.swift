@@ -54,7 +54,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadLevel()
+        performSelector(inBackground: #selector(loadLevel), with: nil)
     }
     
     // MARK: - Game Logic
@@ -63,8 +63,13 @@ class ViewController: UIViewController {
     
     var level = 1
     var matches = 0
+    
+    private func levelUp() {
+        level += 1
+        performSelector(inBackground: #selector(loadLevel), with: nil)
+    }
 
-    private func loadLevel() {
+    @objc private func loadLevel() {
         var clueString = ""
         var answerString = ""
         var letterBitsArray = [String]()
@@ -90,14 +95,11 @@ class ViewController: UIViewController {
             }
         }
         
-        clues = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
-        answers = answerString.trimmingCharacters(in: .whitespacesAndNewlines)
-        letterBits = letterBitsArray.shuffled()
-    }
-    
-    private func levelUp() {
-        level += 1
-        loadLevel()
+        DispatchQueue.main.async { [weak self] in
+            self?.clues = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self?.answers = answerString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self?.letterBits = letterBitsArray.shuffled()
+        }
     }
 
 }
